@@ -1,6 +1,7 @@
 import csv
 import cv2
 import numpy as np
+from random import randint
 
 lines = []
 with open('./driving_log.csv') as csvfile:
@@ -14,6 +15,10 @@ correction = 0.2
 
 
 for line in lines:
+#    print( float(line[3]) < .03 and randint(0,9) > 6)
+    if float(line[3]) < .03 and randint(0,9) > 6: 
+        continue
+
     centerImage = cv2.imread('./IMG/' + line[0].split('\\')[-1])
     leftImage = cv2.imread('./IMG/' + line[1].split('\\')[-1])
     rightImage = cv2.imread('./IMG/' + line[2].split('\\')[-1])
@@ -34,13 +39,6 @@ for line in lines:
     measurements.append(-1 * measurement)
     measurements.append(-1 * measurement + 0.2)
     measurements.append(-1 * measurement - 0.2)
-
-#augmented_images, augmented_measurements = [], []
-#for image, measurements in zip(images, measurements):
-#    augmented_images.append(image)
-#    augmented_measurements.append(measurement)
-#    augmented_images.append()
-#    augmented_measurements.append(measurement * -1.0)
 
 X_train = np.array(images)
 y_train = np.array(measurements)
